@@ -160,14 +160,17 @@ YAML;
 
     private function printNextSteps(): void
     {
+        $dir = basename(base_path());
+
         $this->newLine();
         $this->components->info('Instalação concluída. O migrate NÃO foi executado.');
         $this->line('  Próximos passos:');
         $this->newLine();
-        $this->line('  <fg=cyan>1.</> Suba os containers:        <fg=yellow>docker compose up -d</>');
-        $this->line('  <fg=cyan>2.</> Rode as migrations:        <fg=yellow>docker compose exec php php artisan migrate</>');
-        $this->line('  <fg=cyan>3.</> Instale o front-end:       <fg=yellow>pnpm install</>');
-        $this->line('  <fg=cyan>4.</> Suba o Vite (dev):         <fg=yellow>pnpm run dev</>');
+        $this->line('  <fg=cyan>1.</> Entre no diretório:        <fg=yellow>cd '.$dir.'</>');
+        $this->line('  <fg=cyan>2.</> Suba os containers:        <fg=yellow>docker compose up -d</>');
+        $this->line('  <fg=cyan>3.</> Rode as migrations:        <fg=yellow>docker compose exec php php artisan migrate</>');
+        $this->line('  <fg=cyan>4.</> Instale o front-end:       <fg=yellow>docker compose exec php pnpm install</>');
+        $this->line('  <fg=cyan>5.</> Suba o Vite (dev):         <fg=yellow>docker compose exec php pnpm run dev</>');
         $this->newLine();
         $this->line('  App: <fg=green>http://localhost:8000</>  •  Vite: <fg=green>http://localhost:5173</>');
         $this->newLine();
