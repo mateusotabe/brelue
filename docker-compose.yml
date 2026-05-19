@@ -1,0 +1,47 @@
+services:
+  nginx:
+    image: nginx:1.27-alpine
+    depends_on:
+      - php
+    ports:
+      - "8000:80"
+    volumes:
+      - ./:/home/www
+      - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
+
+  php:
+    build:
+      context: .
+      dockerfile: ./docker/php/Dockerfile
+      target: dev
+    user: "1000:1000"
+    volumes:
+      - ./:/home/www
+    environment:
+      APP_ENV: local
+      # DB (PostgreSQL)
+      # DB_CONNECTION: pgsql
+      # DB_HOST: postgres
+      # DB_PORT: 5432
+      # DB_DATABASE: laravel
+      # DB_USERNAME: laravel
+      # DB_PASSWORD: laravel
+      PNPM_HOME: /home/www/.pnpm
+    ports:
+      - "5173:5173"
+    depends_on:
+      - postgres
+
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: laravel
+      POSTGRES_USER: laravel
+      POSTGRES_PASSWORD: laravel
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
